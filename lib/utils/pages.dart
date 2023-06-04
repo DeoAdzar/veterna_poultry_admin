@@ -4,6 +4,8 @@ class AppPages {
   static const FORGOT_PASSWORD = PagePath.FORGOT_PASSWORD;
   static const CHAT_ROOM = PagePath.CHAT_ROOM;
   static const HOME_CHAT_ROOM = PagePath.HOME_CHAT_ROOM;
+  static const PRODUCT = PagePath.PRODUCT;
+  static const ORDER = PagePath.ORDER;
 }
 
 abstract class PagePath {
@@ -13,4 +15,6 @@ abstract class PagePath {
   static const WIDGET_TREE = '/widget-tree';
   static const HOME_CHAT_ROOM = '/home-chat-room';
   static const CHAT_ROOM = '/chat-room';
+  static const PRODUCT = '/product';
+  static const ORDER = '/order';
 }

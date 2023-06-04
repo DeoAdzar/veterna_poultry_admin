@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 
 import '../utils/pages.dart';
 import '../widget/show_snackbar.dart';
+import 'notification_methods.dart';
 
 //class ini buat ngumpulin fungsi dari firebase auth, dari login,register, sama logout.
 // bakal dipanggil di beberapa layout yang butuh, nnti bakal ada ketambahan juga buat crud dari firestore
@@ -34,10 +35,11 @@ class Auth {
           .doc(currentUser!.uid)
           .get()
           .then(
-        (DocumentSnapshot documentSnapshot) {
+        (DocumentSnapshot documentSnapshot) async {
           if (documentSnapshot.exists) {
             if (documentSnapshot.get('role') == "admin") {
               ShowSnackbar.snackBarNormal('Login Successfully');
+              await NotificationsMethod.updateFirebaseMessagingToken();
               Get.offAllNamed(AppPages.HOME);
             } else {
               ShowSnackbar.snackBarError('You aren\'t registered');

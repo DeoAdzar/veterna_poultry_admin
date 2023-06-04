@@ -49,6 +49,8 @@ dependencies:
   badges: ^3.1.1
   uuid: ^3.0.7
   intl: ^0.18.1
+  firebase_messaging: ^14.6.1
+  http: ^0.13.6
 
 flutter_native_splash:
   color: "#223f93"

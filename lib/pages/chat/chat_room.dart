@@ -14,6 +14,7 @@ import 'package:veterna_poultry_admin/utils/constant.dart';
 
 import '../../db/auth.dart';
 import '../../db/database_methods.dart';
+import '../../db/notification_methods.dart';
 import '../../utils/dimen.dart';
 import '../../utils/my_colors.dart';
 
@@ -32,7 +33,12 @@ class _ChatRoomState extends State<ChatRoom> {
   final ScrollController _scrollController = ScrollController();
   File? imageFile;
   late String? name, img;
+  String? fcmToken;
   int chatLength = 0;
+  void getFcmToken() async {
+    fcmToken = await NotificationsMethod.getFirebaseMessagingTokenFromUser(
+        conversationSenderId);
+  }
 
   Future getImage() async {
     ImagePicker picker = ImagePicker();
@@ -52,6 +58,7 @@ class _ChatRoomState extends State<ChatRoom> {
     Future.delayed(Duration(milliseconds: 200)).then((value) {
       scrollMax();
     });
+    getFcmToken();
     super.initState();
   }
 
@@ -77,6 +84,7 @@ class _ChatRoomState extends State<ChatRoom> {
         .child('chat/images')
         .child("$fileName.jpg");
 
+    // ignore: body_might_complete_normally_catch_error
     var uploadTask = await ref.putFile(imageFile!).catchError((error) async {
       await DatabaseMethod()
           .firestore
@@ -101,11 +109,15 @@ class _ChatRoomState extends State<ChatRoom> {
           .update({"message": imageUrl});
 
       print(imageUrl);
+      if (fcmToken != "") {
+        await NotificationsMethod.sendPushNotificationImage(fcmToken, imageUrl);
+      }
     }
   }
 
   void onSendMessage() async {
     if (_message.text.isNotEmpty) {
+      String tempMessage = _message.text;
       Map<String, dynamic> messages = {
         "sendby": Auth().currentUser!.uid,
         "message": _message.text,
@@ -125,6 +137,10 @@ class _ChatRoomState extends State<ChatRoom> {
           .doc(conversationSenderId)
           .collection('chats')
           .add(messages);
+      if (fcmToken != "") {
+        await NotificationsMethod.sendPushNotificationText(
+            fcmToken, tempMessage);
+      }
 
       // scrollMax();
     }
