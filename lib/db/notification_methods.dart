@@ -74,6 +74,33 @@ class NotificationsMethod {
     }
   }
 
+  static Future<void> sendPushNotificationTextGeneral(
+      String? token, String title, String message) async {
+    try {
+      if (token != "" || token!.isNotEmpty) {
+        final body = {
+          "to": token,
+          "notification": {"title": title, "body": message}
+        };
+
+        var res = await post(Uri.parse("https://fcm.googleapis.com/fcm/send"),
+            headers: {
+              HttpHeaders.contentTypeHeader: 'application/json',
+              HttpHeaders.authorizationHeader:
+                  'key=AAAAIlKGraI:APA91bGc5jzsiGW_K4pmA4OAiTMnTuwS0onKkMlbL28Q5rnmvKM5DmWbyMM9hpiOBBThr3wnY80n2tkhu3J2Vsbf1DlrnTAiVsX3vU3QEktMbJ9HyGyXqYr04jlf6cKNhPEEWZakZbpR'
+            },
+            body: jsonEncode(body));
+
+        print('response status : ${res.statusCode}');
+        print('response body : ${res.body}');
+      } else {
+        print('token null');
+      }
+    } catch (e) {
+      print("sendNotification: $e");
+    }
+  }
+
   static Future<void> sendPushNotificationImage(
       String? token, String imagePath) async {
     try {

@@ -1,17 +1,20 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
 import '../../db/database_methods.dart';
 import '../../utils/dimen.dart';
 import '../../utils/my_colors.dart';
+import '../../utils/pages.dart';
 
 class OrderPending extends StatelessWidget {
   const OrderPending({super.key});
   String readTimestamp(Timestamp timestamp) {
     var now = DateTime.now();
     var format = DateFormat('HH:mm');
+    var day = DateFormat('EEEE, dd-MM-yyy', "id_ID");
     var date = DateTime.parse(timestamp.toDate().toString());
     var diff = now.difference(date);
     var time = '';
@@ -27,11 +30,7 @@ class OrderPending extends StatelessWidget {
         time = '${diff.inDays} days ago';
       }
     } else {
-      if (diff.inDays == 7) {
-        time = '${(diff.inDays / 7).floor()} week ago';
-      } else {
-        time = '${(diff.inDays / 7).floor()} weeks ago';
-      }
+      time = day.format(date);
     }
     return time;
   }
@@ -49,16 +48,36 @@ class OrderPending extends StatelessWidget {
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (snapshot.data != null) {
-              return ListView.builder(
-                itemCount: snapshot.data!.docs.length,
-                itemBuilder: (context, index) {
-                  Map<String, dynamic> map =
-                      snapshot.data!.docs[index].data() as Map<String, dynamic>;
-                  return item(snapshot.data!.docs[index].id, map, context);
-                },
-              );
+              if (snapshot.data!.docs.isNotEmpty) {
+                var listData = snapshot.data!.docs;
+                listData.sort(((b, a) {
+                  var adate = Timestamp.now();
+                  var bdate = Timestamp.now();
+                  if (a['time'] != null && b['time'] != null) {
+                    adate = a['time'];
+                    bdate = b['time'];
+                  }
+                  return adate.compareTo(bdate);
+                }));
+                return ListView.builder(
+                  itemCount: snapshot.data!.docs.length,
+                  itemBuilder: (context, index) {
+                    Map<String, dynamic> map =
+                        listData[index].data() as Map<String, dynamic>;
+                    return item(listData[index].id, map, context);
+                  },
+                );
+              } else {
+                return Container(
+                  margin: EdgeInsets.only(top: Get.height * 0.02),
+                  child: Center(child: Text("No data yet")),
+                );
+              }
             } else {
-              return Container();
+              return Container(
+                margin: EdgeInsets.only(top: Get.height * 0.02),
+                child: Center(child: CircularProgressIndicator()),
+              );
             }
           },
         ),
@@ -68,7 +87,9 @@ class OrderPending extends StatelessWidget {
 
   Widget item(String id, Map<String, dynamic> map, BuildContext context) {
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        Get.toNamed(AppPages.DETAIL_ORDER, arguments: {"data": map});
+      },
       child: Container(
         width: Dimen(context).width,
         padding: EdgeInsets.all(15),
@@ -114,7 +135,7 @@ class OrderPending extends StatelessWidget {
                   map['time'] != null ? readTimestamp(map['time']) : "",
                   style: GoogleFonts.inter(
                       color: Colors.black,
-                      fontSize: 14.0,
+                      fontSize: 12.0,
                       fontWeight: FontWeight.normal),
                 ),
                 SizedBox(

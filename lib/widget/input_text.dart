@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../utils/my_colors.dart';
 
@@ -13,6 +14,8 @@ class InputText extends StatelessWidget {
       required this.textInputType,
       required this.height,
       required this.verticalCenter,
+      this.inputFormatters,
+      this.onChanged,
       this.validator})
       : super(key: key);
   final TextEditingController controller;
@@ -20,7 +23,9 @@ class InputText extends StatelessWidget {
   final double height;
   final bool verticalCenter;
   final TextInputType textInputType;
+  final List<TextInputFormatter>? inputFormatters;
   final FormFieldValidator<String>? validator;
+  final Function(String)? onChanged;
 
   TextAlignVertical textVertical() {
     return verticalCenter ? TextAlignVertical.center : TextAlignVertical.top;
@@ -44,6 +49,8 @@ class InputText extends StatelessWidget {
         textAlign: TextAlign.start,
         textAlignVertical: textVertical(),
         keyboardType: textInputType,
+        inputFormatters: inputFormatters,
+        onChanged: onChanged,
         style: GoogleFonts.inter(
             fontSize: 15,
             fontWeight: FontWeight.normal,

@@ -17,6 +17,7 @@ import '../../db/database_methods.dart';
 import '../../db/notification_methods.dart';
 import '../../utils/dimen.dart';
 import '../../utils/my_colors.dart';
+import '../../utils/show_image.dart';
 
 class ChatRoom extends StatefulWidget {
   const ChatRoom({Key? key}) : super(key: key);
@@ -418,23 +419,5 @@ class _ChatRoomState extends State<ChatRoom> {
               ),
             ),
           );
-  }
-}
-
-class ShowImage extends StatelessWidget {
-  final String imageUrl;
-
-  const ShowImage({required this.imageUrl, Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        height: Dimen(context).height,
-        width: Dimen(context).width,
-        color: Colors.black,
-        child: Image.network(imageUrl),
-      ),
-    );
   }
 }
