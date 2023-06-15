@@ -153,21 +153,6 @@ class _LoginPageState extends State<LoginPage> {
                 SizedBox(
                   height: Dimen(context).height * 0.02,
                 ),
-                Container(
-                  alignment: Alignment.center,
-                  child: InkWell(
-                    onTap: () {
-                      Get.toNamed(AppPages.FORGOT_PASSWORD);
-                    },
-                    child: Text(
-                      'Lupa Password?',
-                      style: GoogleFonts.inter(
-                          color: Colors.red,
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ),
               ],
             ),
           ),

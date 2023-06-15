@@ -58,22 +58,15 @@ class _AddProductPageState extends State<AddProductPage> {
         "title": _controllerName.text,
         "price": int.parse(_controllerPrice.text),
       };
-      await DatabaseMethod()
-          .firestore
-          .collection('products')
-          .add(sendData)
-          .then((value) {
-        _controllerName.clear();
-        _controllerPrice.clear();
-        imageFile = null;
-        Get.back();
-        Get.back();
-        ShowSnackbar.snackBarSuccess("Successfully add product");
-      }).catchError((e) {
-        Get.back();
-        ShowSnackbar.snackBarError("Terjadi kesalahan menambah product");
-      });
+      await DatabaseMethod().firestore.collection('products').add(sendData);
+      _controllerName.clear();
+      _controllerPrice.clear();
+      imageFile = null;
+      Get.back();
+      Get.back();
+      ShowSnackbar.snackBarSuccess("Successfully add product");
     } on FirebaseException catch (e) {
+      Get.back();
       ShowSnackbar.snackBarError(e.message.toString());
     }
   }
@@ -187,8 +180,7 @@ class _AddProductPageState extends State<AddProductPage> {
                                   // The background colordire
                                   backgroundColor: Colors.white,
                                   child: Padding(
-                                    padding: EdgeInsets.symmetric(
-                                        vertical: 20),
+                                    padding: EdgeInsets.symmetric(vertical: 20),
                                     child: Column(
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
