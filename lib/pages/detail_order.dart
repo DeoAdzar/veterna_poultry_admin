@@ -468,13 +468,13 @@ class _DetailOrderState extends State<DetailOrder> {
                       style:
                           ElevatedButton.styleFrom(primary: MyColors.mainColor),
                       onPressed: () =>
-                          Get.to(ShowImage(imageUrl: data['transactionImage'])),
+                          Get.to(ShowImage(imageUrl: data['transferImage'])),
                       child: Text("Bukti Transfer")),
                   ElevatedButton(
                       style:
                           ElevatedButton.styleFrom(primary: MyColors.mainColor),
                       onPressed: () {
-                        print("clicked");
+                        Get.to(ShowImage(imageUrl: data['transactionImage']));
                       },
                       child: Text("Bukti COD"))
                 ],
