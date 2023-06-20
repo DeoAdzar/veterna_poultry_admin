@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.veterna_poultry_admin">
    <application
-        android:label="veterna_poultry_admin"
+        android:label="VeternaPoultryAdmin"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

@@ -155,13 +155,19 @@ class _DetailOrderState extends State<DetailOrder> {
             children: [
               Container(
                 margin: EdgeInsets.only(right: 20),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                decoration: BoxDecoration(
+                    color: Colors.blue.shade400,
+                    borderRadius:
+                        const BorderRadius.all(Radius.circular(25.0))),
                 child: Text(
                     data['paymentMethod'] == '0'
                         ? 'Bayar di tempat'
                         : "Transfer ",
                     textAlign: TextAlign.left,
                     style: GoogleFonts.inter(
-                        color: Colors.black,
+                        color: Colors.white,
                         fontSize: 16.0,
                         fontWeight: FontWeight.bold)),
               ),

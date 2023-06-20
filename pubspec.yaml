@@ -51,6 +51,13 @@ dependencies:
   intl: ^0.18.1
   firebase_messaging: ^14.6.1
   http: ^0.13.6
+  cached_network_image: ^3.2.3
+  flutter_launcher_icons: ^0.13.1
+
+flutter_launcher_icons:
+  android: true
+  ios: false
+  image_path: "assets/icon_apps.png"
 
 flutter_native_splash:
   color: "#223f93"
